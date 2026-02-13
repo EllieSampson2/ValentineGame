@@ -63,7 +63,7 @@ function draw() {
 
   // Draw hearts
   hearts.forEach(h => {
-    ctx.fillStyle = "pink";
+    ctx.fillStyle = "red";
     ctx.beginPath();
     ctx.moveTo(h.x + h.size/2, h.y + h.size/4);
     ctx.bezierCurveTo(h.x + h.size/2 + h.size/4, h.y, h.x + h.size, h.y + h.size/2, h.x + h.size/2, h.y + h.size);
