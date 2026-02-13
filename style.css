@@ -13,7 +13,7 @@ h1 {
 }
 
 canvas {
-  background: #fff0;
+  background: rgba(255, 255, 255, 0.2);
   border: 3px solid #fff;
   border-radius: 10px;
   display: block;
