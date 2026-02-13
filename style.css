@@ -19,3 +19,13 @@ canvas {
   display: block;
   margin: 20px auto;
 }
+
+#jokeDisplay {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #fff;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 8px;
+  min-height: 50px;
+}
