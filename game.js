@@ -11,13 +11,14 @@ const basket = {
 
 const hearts = [];
 let score = 0;
+let previousJokes = [];
 
 // Generate hearts at random positions
 function createHeart() {
   hearts.push({
-    x: Math.random() * (canvas.width - 20),
+    x: Math.random() * (canvas.width - 30),
     y: 0,
-    size: 20,
+    size: 30,
     speed: 2 + Math.random() * 2
   });
 }
@@ -27,7 +28,31 @@ const keys = {};
 document.addEventListener("keydown", (e) => keys[e.key] = true);
 document.addEventListener("keyup", (e) => keys[e.key] = false);
 
-// Game loop
+// Fetch a random dad joke
+async function fetchDadJoke() {
+  try {
+    let joke;
+    do {
+      const res = await fetch("https://icanhazdadjoke.com/", {
+        headers: { Accept: "application/json" }
+      });
+      const data = await res.json();
+      joke = data.joke;
+    } while (previousJokes.includes(joke));
+    previousJokes.push(joke);
+    return joke;
+  } catch {
+    return "You're amazing! ❤️";
+  }
+}
+
+// Show joke at milestone
+async function showMilestoneMessage() {
+  const joke = await fetchDadJoke();
+  alert(`Milestone reached! 💫\n\n${joke}`);
+}
+
+// Update game state
 function update() {
   // Move basket
   if (keys["ArrowLeft"] && basket.x > 0) basket.x -= basket.speed;
@@ -46,7 +71,14 @@ function update() {
       hearts.splice(i, 1);
       score++;
       document.getElementById("score").innerText = "Score: " + score;
+
+      // Confetti effect
+      confetti({ particleCount: 20, spread: 50, origin: { y: 0.6 } });
+
+      // Show dad joke at milestones (every 5 hearts)
+      if (score % 5 === 0) showMilestoneMessage();
     }
+
     // Remove hearts that fall off screen
     else if (hearts[i].y > canvas.height) {
       hearts.splice(i, 1);
@@ -54,6 +86,7 @@ function update() {
   }
 }
 
+// Draw basket and hearts
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -61,17 +94,14 @@ function draw() {
   ctx.fillStyle = "darkred";
   ctx.fillRect(basket.x, basket.y, basket.width, basket.height);
 
-  // Draw hearts
+  // Draw hearts as emojis
   hearts.forEach(h => {
-    ctx.fillStyle = "red";
-    ctx.beginPath();
-    ctx.moveTo(h.x + h.size/2, h.y + h.size/4);
-    ctx.bezierCurveTo(h.x + h.size/2 + h.size/4, h.y, h.x + h.size, h.y + h.size/2, h.x + h.size/2, h.y + h.size);
-    ctx.bezierCurveTo(h.x, h.y + h.size/2, h.x + h.size/2 - h.size/4, h.y, h.x + h.size/2, h.y + h.size/4);
-    ctx.fill();
+    ctx.font = `${h.size}px Arial`;
+    ctx.fillText("❤️", h.x, h.y + h.size);
   });
 }
 
+// Game loop
 function loop() {
   update();
   draw();
