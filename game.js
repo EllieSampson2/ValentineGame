@@ -46,12 +46,6 @@ async function fetchDadJoke() {
   }
 }
 
-// Show joke at milestone
-async function showMilestoneMessage() {
-  const joke = await fetchDadJoke();
-  alert(`Milestone reached! 💫\n\n${joke}`);
-}
-
 // Update game state
 function update() {
   // Move basket
