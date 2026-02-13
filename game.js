@@ -101,6 +101,16 @@ function draw() {
   });
 }
 
+// Show joke at milestone without stopping the game
+async function showMilestoneMessage() {
+  const joke = await fetchDadJoke();
+  const jokeDiv = document.getElementById("jokeDisplay");
+  jokeDiv.innerText = joke;
+
+  // Optional: add a small confetti effect for fun
+  confetti({ particleCount: 20, spread: 50, origin: { y: 0.6 } });
+}
+
 // Game loop
 function loop() {
   update();
