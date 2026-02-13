@@ -58,7 +58,7 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Draw basket
-  ctx.fillStyle = "red";
+  ctx.fillStyle = "darkred";
   ctx.fillRect(basket.x, basket.y, basket.width, basket.height);
 
   // Draw hearts
